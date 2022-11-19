@@ -5,6 +5,7 @@ import {useNavigation} from '@react-navigation/core';
 import {useData, useTheme, useTranslation} from '../hooks/';
 import * as regex from '../constants/regex';
 import {Block, Button, Input, Image, Text, Checkbox} from '../components/';
+import {instance} from '../service/baseUrl';
 
 const isAndroid = Platform.OS === 'android';
 
@@ -46,12 +47,19 @@ const Register = () => {
     [setRegistration],
   );
 
-  const handleSignUp = useCallback(() => {
+  const handleSignUp = async () => {
     if (!Object.values(isValid).includes(false)) {
       /** send/save registratin data */
-      console.log('handleSignUp', registration);
+      // console.log('handleSignUp', registration);
+      try {
+        await instance.post('auth/register', {
+          ...registration,
+          username: registration.name,
+        });
+        navigation.navigate('login');
+      } catch (error) {}
     }
-  }, [isValid, registration]);
+  };
 
   useEffect(() => {
     setIsValid((state) => ({

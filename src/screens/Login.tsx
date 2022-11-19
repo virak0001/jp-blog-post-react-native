@@ -5,9 +5,8 @@ import {useNavigation} from '@react-navigation/core';
 import {useData, useTheme, useTranslation} from '../hooks/';
 import * as regex from '../constants/regex';
 import {Block, Button, Input, Image, Text} from '../components/';
-import axios from 'axios';
 import {AuthContext} from '../../src/hooks/context';
-import { instance } from '../service/baseUrl';
+import {instance} from '../service/baseUrl';
 
 const isAndroid = Platform.OS === 'android';
 
@@ -56,7 +55,6 @@ const Login = () => {
         .catch(function (error) {
           console.log(error);
         });
-      console.log('handleSignIn', login);
     }
   };
 

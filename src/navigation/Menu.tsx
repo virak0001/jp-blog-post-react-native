@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Alert, Animated, Linking, StyleSheet} from 'react-native';
+import {Animated, Linking, StyleSheet} from 'react-native';
+import {AuthContext} from '../hooks/context';
 
 import {
   useIsDrawerOpen,
@@ -10,7 +11,7 @@ import {
 } from '@react-navigation/drawer';
 
 import Screens from './Screens';
-import {Block, Text, Switch, Button, Image} from '../components';
+import {Block, Text, Button, Image} from '../components';
 import {useData, useTheme, useTranslation} from '../hooks';
 
 const Drawer = createDrawerNavigator();
@@ -67,10 +68,12 @@ const DrawerContent = (
 ) => {
   const {navigation} = props;
   const {t} = useTranslation();
-  const {isDark, handleIsDark} = useData();
+  // const {isDark, handleIsDark} = useData();
   const [active, setActive] = useState('Home');
   const {assets, colors, gradients, sizes} = useTheme();
   const labelColor = colors.text;
+
+  const {signOut} = React.useContext(AuthContext);
 
   const handleNavigation = useCallback(
     (to) => {
@@ -162,7 +165,7 @@ const DrawerContent = (
         />
 
         <Text semibold transform="uppercase" opacity={0.5}>
-          {t('menu.documentation')}
+          {t('menu.setting')}
         </Text>
 
         <Button
@@ -170,9 +173,7 @@ const DrawerContent = (
           justify="flex-start"
           marginTop={sizes.sm}
           marginBottom={sizes.s}
-          onPress={() =>
-            handleWebLink('https://github.com/creativetimofficial')
-          }>
+          onPress={() => signOut()}>
           <Block
             flex={0}
             radius={6}
@@ -187,24 +188,13 @@ const DrawerContent = (
               width={14}
               height={14}
               color={colors.black}
-              source={assets.documentation}
+              source={assets.avatar1}
             />
           </Block>
           <Text p color={labelColor}>
-            {t('menu.started')}
+            {t('navigation.logout')}
           </Text>
         </Button>
-
-        <Block row justify="space-between" marginTop={sizes.sm}>
-          <Text color={labelColor}>{t('navigation.logout')}</Text>
-          <Switch
-            checked={isDark}
-            onPress={(checked) => {
-              handleIsDark(checked);
-              Alert.alert(t('pro.title'), t('pro.alert'));
-            }}
-          />
-        </Block>
       </Block>
     </DrawerContentScrollView>
   );

@@ -13,7 +13,7 @@ const Home = () => {
 
   useEffect(() => {
     setTimeout(async () => {
-      setIsLoading(false);
+      setIsLoading(true);
       let userToken;
       userToken = null;
       try {
@@ -27,6 +27,8 @@ const Home = () => {
         setProducts(response.data || []);
       } catch (e) {
         console.log(e);
+      } finally {
+        setIsLoading(false);
       }
       // console.log('user token: ', userToken);
     });
@@ -46,9 +48,11 @@ const Home = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: sizes.l}}>
         <Block row wrap="wrap" justify="space-between" marginTop={sizes.sm}>
-          {products?.map((product) => (
-            <Product {...product} key={`card-${product?.id}`} />
-          ))}
+          {!loading
+            ? products?.map((product) => (
+                <Product {...product} key={`card-${product?.id}`} />
+              ))
+            : null}
         </Block>
       </Block>
     </Block>

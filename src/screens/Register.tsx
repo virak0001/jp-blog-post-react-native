@@ -26,6 +26,7 @@ const Register = () => {
   const {isDark} = useData();
   const {t} = useTranslation();
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(true);
   const [isValid, setIsValid] = useState<IRegistrationValidation>({
     name: false,
     email: false,
@@ -49,8 +50,6 @@ const Register = () => {
 
   const handleSignUp = async () => {
     if (!Object.values(isValid).includes(false)) {
-      /** send/save registratin data */
-      // console.log('handleSignUp', registration);
       try {
         await instance.post('auth/register', {
           ...registration,
@@ -206,6 +205,7 @@ const Register = () => {
                 marginVertical={sizes.s}
                 marginHorizontal={sizes.sm}
                 gradient={gradients.primary}
+                loading={loading}
                 disabled={Object.values(isValid).includes(false)}>
                 <Text bold white transform="uppercase">
                   {t('common.signup')}

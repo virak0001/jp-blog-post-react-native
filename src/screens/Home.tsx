@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
+import {Ionicons} from '@expo/vector-icons';
 
 import {useTheme, useTranslation} from '../hooks';
-import {Block, Input, Product} from '../components';
+import {Block, Button, Input, Product} from '../components';
 import {instance} from '../service/baseUrl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {IProduct} from '../constants/types';
@@ -30,7 +31,6 @@ const Home = () => {
       } finally {
         setIsLoading(false);
       }
-      // console.log('user token: ', userToken);
     });
   }, []);
 
@@ -48,13 +48,26 @@ const Home = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: sizes.l}}>
         <Block row wrap="wrap" justify="space-between" marginTop={sizes.sm}>
-          {!loading
-            ? products?.map((product) => (
+          {!loading && products !== undefined
+            ? (products || [])?.map((product) => (
                 <Product {...product} key={`card-${product?.id}`} />
               ))
             : null}
         </Block>
       </Block>
+      <Button
+        primary
+        shadow={false}
+        radius={sizes.xl}
+        style={{
+          position: 'absolute',
+          left: '80%',
+          top: '88%',
+        }}
+        width={64}
+        height={64}>
+        <Ionicons size={50} name="add" color={colors.white} />
+      </Button>
     </Block>
   );
 };
